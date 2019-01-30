@@ -403,8 +403,8 @@ void SMFWriterSingle::packEvents(Song *pSong, SMF &smf)
 
 	unsigned nLastTick = 1;
 	for ( vector<SMFEvent*>::iterator it = m_eventList.begin() ;
-		  it != m_eventList.end();
-		  it++ ) {
+		it != m_eventList.end();
+		 it++ ) {
 		SMFEvent *pEvent = *it;
 		pEvent->m_nDeltaTime = ( pEvent->m_nTicks - nLastTick ) * 4;
 		nLastTick = pEvent->m_nTicks;
@@ -441,7 +441,7 @@ void SMFWriterMulti::prepareEvents(Song *pSong, SMF &smf)
 {
 	InstrumentList *iList = pSong->get_instrument_list();
 	m_eventLists.clear();
-	for(unsigned nInstr=0; nInstr < iList->size(); nInstr++){
+	for( unsigned nInstr=0; nInstr < iList->size(); nInstr++ ){
 		m_eventLists.push_back(new EventList());
 	}
 }
@@ -471,8 +471,8 @@ void SMFWriterMulti::packEvents(Song *pSong, SMF &smf)
 		pTrack->addEvent( new SMFTrackNameMetaEvent( instrument->get_name() , 0 ) );
 		unsigned nLastTick = 1;
 		for ( vector<SMFEvent*>::iterator it = eventList->begin() ;
-			  it != eventList->end();
-			  it++ ) {
+			it != eventList->end();
+			 it++ ) {
 			SMFEvent *pEvent = *it;
 			pEvent->m_nDeltaTime = ( pEvent->m_nTicks - nLastTick ) * 4;
 			nLastTick = pEvent->m_nTicks;

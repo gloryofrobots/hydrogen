@@ -282,6 +282,7 @@ void MainForm::createMenuBar()
 	m_pFileMenu->addSeparator();				// -----
 
 	m_pFileMenu->addAction( trUtf8( "Export &MIDI file" ), this, SLOT( action_file_export_midi() ), QKeySequence( "Ctrl+M" ) );
+	m_pFileMenu->addAction( trUtf8( "Export MIDI multitrack file" ), this, SLOT( action_file_export_midi_multitrack() ), QKeySequence( "" ) );
 	m_pFileMenu->addAction( trUtf8( "&Export song" ), this, SLOT( action_file_export() ), QKeySequence( "Ctrl+E" ) );
 	m_pFileMenu->addAction( trUtf8( "Export &LilyPond file" ), this, SLOT( action_file_export_lilypond() ), QKeySequence( "Ctrl+L" ) );
 
@@ -1638,7 +1639,40 @@ void MainForm::action_file_export_midi()
 		Song *pSong = Hydrogen::get_instance()->getSong();
 
 		// create the Standard Midi File object
-		SMFWriter *pSmfWriter = new SMFWriter();
+		SMFWriter *pSmfWriter = new SMFWriterSingle();
+		pSmfWriter->save( sFilename, pSong );
+
+		delete pSmfWriter;
+	}
+}
+
+void MainForm::action_file_export_midi_multitrack()
+{
+	if ( ((Hydrogen::get_instance())->getState() == STATE_PLAYING) ) {
+		Hydrogen::get_instance()->sequencer_stop();
+	}
+
+	QFileDialog fd(this);
+	fd.setFileMode(QFileDialog::AnyFile);
+	fd.setNameFilter( trUtf8("Midi file (*.mid)") );
+	fd.setDirectory( QDir::homePath() );
+	fd.setWindowTitle( trUtf8( "Export MIDI file" ) );
+	fd.setAcceptMode( QFileDialog::AcceptSave );
+
+	QString sFilename;
+	if ( fd.exec() == QDialog::Accepted ) {
+		sFilename = fd.selectedFiles().first();
+	}
+
+	if ( !sFilename.isEmpty() ) {
+		if ( sFilename.endsWith(".mid") == false ) {
+			sFilename += ".mid";
+		}
+
+		Song *pSong = Hydrogen::get_instance()->getSong();
+
+		// create the Standard Midi File object
+		SMFWriter *pSmfWriter = new SMFWriterMulti();
 		pSmfWriter->save( sFilename, pSong );
 
 		delete pSmfWriter;
