@@ -402,7 +402,7 @@ void SMFWriterSingle::packEvents(Song *pSong, SMF &smf)
 	smf.addTrack( pTrack1 );
 
 	unsigned nLastTick = 1;
-	for ( vector<SMFEvent*>::iterator it = m_eventList.begin() ;
+	for ( vector<SMFEvent*>::iterator it = m_eventList.begin();
 		it != m_eventList.end();
 		 it++ ) {
 		SMFEvent *pEvent = *it;
@@ -470,7 +470,7 @@ void SMFWriterMulti::packEvents(Song *pSong, SMF &smf)
 		smf.addTrack( pTrack );
 		pTrack->addEvent( new SMFTrackNameMetaEvent( instrument->get_name() , 0 ) );
 		unsigned nLastTick = 1;
-		for ( vector<SMFEvent*>::iterator it = eventList->begin() ;
+		for ( vector<SMFEvent*>::iterator it = eventList->begin();
 			it != eventList->end();
 			 it++ ) {
 			SMFEvent *pEvent = *it;
